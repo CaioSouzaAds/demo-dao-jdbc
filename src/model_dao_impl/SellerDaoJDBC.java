@@ -19,7 +19,7 @@ import model_entities.Seller;
 public class SellerDaoJDBC implements SellerDao {
 
     private Connection conn;
-    private Integer id;
+   
 
     public SellerDaoJDBC(Connection conn) {
         this.conn = conn;
@@ -27,7 +27,20 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void deleteById(Integer id) {
-        // TODO Auto-generated method stub
+
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "DELETE FROM seller "
+                    +"WHERE Id = ? ");
+            st.setInt(1, id);
+            st.executeUpdate();   
+        } catch (SQLException e) {
+             throw new DbExeception(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+        }
 
     }
 
@@ -164,13 +177,13 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller obj) {
-        
+
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
                     "UPDATE seller "
-                    + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
-                    + "WHERE id = ?");
+                            + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                            + "WHERE id = ?");
             st.setString(1, obj.getName());
             st.setString(2, obj.getEmail());
             st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
@@ -182,8 +195,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         } catch (SQLException e) {
             throw new DbExeception(e.getMessage());
-        }
-        finally{
+        } finally {
             DB.closeStatement(st);
         }
 
