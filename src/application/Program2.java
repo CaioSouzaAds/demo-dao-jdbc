@@ -19,9 +19,14 @@ public class Program2 {
 
             
             System.out.println(("\n==== TESTE 2:   Department SelectById ===="));
-            Department department = deparmentDao.findById(5);
+            Department department = deparmentDao.findById(8);
             System.out.println(department);
-            
+
+            System.out.println(("\n==== TESTE 3:   Department Update ===="));
+            department = deparmentDao.findById(8);
+            department.setName("Car workshop");
+            deparmentDao.update(department);
+            System.out.println("Success Update");
         }
 
 }
